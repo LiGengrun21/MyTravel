@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: registry
+  cloud:
+    fail-fast: true
+    password: ${CONFIG_SERVICE_PASSWORD}
+    username: user
+  config:
+    import: optional:configserver:http://localhost:8888
+
+eureka:
+  instance:
+    prefer-ip-address: true # tell Eureka server，on Eureka dashboard show ip address instead of hostname
+  client:                   # do not register as a client, do not need to pull registry information of other services
+    registerWithEureka: false
+    fetchRegistry: false
+#    server:
+#      waitTimeInMsWhenSyncEmpty: 0

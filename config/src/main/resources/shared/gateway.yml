@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service #唯一的id，建议与服务名称相吻合
+          uri: lb://AUTH-SERVICE   # lb = load balancing
+          predicates:
+            - Path=/user/**
+server:
+  port: 4000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info
