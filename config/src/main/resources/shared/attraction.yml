@@ -1,0 +1,12 @@
+server:
+  port: 7001
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3309/mytravel?useSSL=false&autoReconnect=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 85961030
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*Mapper.xml
+  type-aliases-package: com.mytravel.attractionservice.entity
