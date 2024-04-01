@@ -39,7 +39,7 @@
         <module>registry</module>
         <module>gateway</module>
         <module>auth-service</module>
-<!--        <module>order-service</module>-->
+        <module>order-service</module>
 <!--        <module>attraction-service</module>-->
         <module>hotel-service</module>
 <!--        <module>search-service</module>-->

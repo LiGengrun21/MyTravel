@@ -14,6 +14,10 @@ security:
     resource:
       user-info-uri: http://localhost:5000/uaa/users/current # auth-service
 
-#spring:
-#  rabbitmq:
-#    host: rabbitmq
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+#    virtual-host: /myTravel # 每个user有一个自己的虚拟主机，以便于隔离，默认是/
+    username: guest
+    password: guest

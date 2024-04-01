@@ -1,6 +1,7 @@
 package com.mytravel.hotelservice.controller;
 
 import com.mytravel.hotelservice.entity.Room;
+import com.mytravel.hotelservice.entity.dto.HotelOrderDto;
 import com.mytravel.hotelservice.service.RoomService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,16 +21,16 @@ public class HotelController {
     private RoomService roomService;
 
     /**
-     *
-     * @param room
+     * 前端发来的数据用一个dto包装
+     * @param hotelOrderDto
      * @return orderId
      * @throws Exception
      */
     @Operation(summary = "reserve a room")
     @ResponseBody
     @PostMapping("/room/order")
-    public int createOrder(Room room) throws Exception{
-        return roomService.createOrder(room);
+    public int createOrder(@RequestBody HotelOrderDto hotelOrderDto) throws Exception{
+        return roomService.createOrder(hotelOrderDto);
     }
 
     /**
@@ -43,5 +44,12 @@ public class HotelController {
     @GetMapping("/room/id")
     public Room getRoomById(int roomId) throws Exception{
         return roomService.getRoomById(roomId);
+    }
+
+    @Operation(summary = "add a new room")
+    @ResponseBody
+    @PostMapping("/room")
+    public int createRoom(Room room) throws Exception{
+        return roomService.createRoom(room);
     }
 }

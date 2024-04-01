@@ -25,4 +25,6 @@ public class Room {
     private String roomNumber;
 
     private String description;
+
+    private Integer roomStatus;
 }

@@ -1,17 +1,19 @@
-package com.mytravel.hotelservice;
+package com.mytravel.orderservice;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@MapperScan("com.mytravel.hotelservice.mapper")
+@MapperScan("com.mytravel.orderservice.mapper")
 @EnableRabbit
-public class HotelServiceApplication {
+@EnableFeignClients
+public class OrderServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(HotelServiceApplication.class, args);
+        SpringApplication.run(OrderServiceApplication.class, args);
     }
 
 }
