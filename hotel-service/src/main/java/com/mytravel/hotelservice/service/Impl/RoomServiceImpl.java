@@ -27,13 +27,17 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public int createOrder(HotelOrderDto hotelOrderDto) throws Exception {
 
-        // create and send the order info order-service
-        System.out.println(hotelOrderDto.toString()+"XXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        // before creating order, check if the room is available
+        Room room=roomMapper.selectById(hotelOrderDto.getRoomId());
+        if (room.getRoomStatus()!=1){
+            return 0; //order creation fails
+        }
+        // if available, create and send the order info order-service
+        //System.out.println(hotelOrderDto.toString()+"XXXXXXXXXXXXXXXXXXXXXXXXXXX");
         String jsonString=JSON.toJSONString(hotelOrderDto);
         // 发送JSON String
         rabbitTemplate.convertAndSend("order.exchange", "hotelOrderRoutingKey", jsonString);
         // update room information (change room_status)
-        Room room=roomMapper.selectById(hotelOrderDto.getRoomId());
         room.setRoomStatus(2); //room booked
         int result=roomMapper.updateById(room);
         return result;
