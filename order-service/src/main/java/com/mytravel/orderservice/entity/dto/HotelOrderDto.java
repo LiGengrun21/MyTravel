@@ -19,4 +19,15 @@ public class HotelOrderDto implements Serializable {
     private String checkIn;
 
     private String checkOut;
+
+    public HotelOrderDto(Integer userId, Double price, Integer roomId, String checkIn, String checkOut) {
+        this.userId = userId;
+        this.price = price;
+        this.roomId = roomId;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+    }
+
+    public HotelOrderDto() {
+    }
 }

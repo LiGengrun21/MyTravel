@@ -7,6 +7,9 @@ import com.mytravel.hotelservice.service.RoomService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.alibaba.fastjson.JSON;
+
+
 
 /**
  * @author Li Gengrun
@@ -25,8 +28,10 @@ public class RoomServiceImpl implements RoomService {
     public int createOrder(HotelOrderDto hotelOrderDto) throws Exception {
 
         // create and send the order info order-service
-        rabbitTemplate.convertAndSend("order.exchange", "hotelOrderRoutingKey", hotelOrderDto);
-        System.out.println("Order sent!");
+        System.out.println(hotelOrderDto.toString()+"XXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        String jsonString=JSON.toJSONString(hotelOrderDto);
+        // 发送JSON String
+        rabbitTemplate.convertAndSend("order.exchange", "hotelOrderRoutingKey", jsonString);
         // update room information (change room_status)
         Room room=roomMapper.selectById(hotelOrderDto.getRoomId());
         room.setRoomStatus(2); //room booked

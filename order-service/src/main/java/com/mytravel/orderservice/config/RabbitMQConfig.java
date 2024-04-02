@@ -1,12 +1,12 @@
 package com.mytravel.orderservice.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitMQConfig {
-
     @Bean
     Queue queue() {
         Queue queue=new Queue("hotelOrder.queue", false); //durable为false意味着队列中的消息在RabbitMQ服务重启后会丢失
@@ -42,12 +41,13 @@ public class RabbitMQConfig {
         return BindingBuilder.bind(queue).to(exchange).with("hotelOrderRoutingKey");
     }
 
-    /**
-     * 因为producer要发送object对象
-     * @return Jackson2JsonMessageConverter
-     */
-    @Bean
-    public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
+//    /**
+//     * 因为producer要发送object对象
+//     * @return Jackson2JsonMessageConverter
+//     */
+//    @Bean
+//    public MessageConverter  producerJackson2MessageConverter(ObjectMapper objectMapper) {
+//        return new Jackson2JsonMessageConverter(objectMapper);
+//    }
+
 }
