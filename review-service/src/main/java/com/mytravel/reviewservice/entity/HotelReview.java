@@ -1,5 +1,9 @@
 package com.mytravel.reviewservice.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import java.sql.Timestamp;
 
@@ -10,8 +14,10 @@ import java.io.Serializable;
  * @date 2024/4/6 20:38
  */
 @Data
+@TableName(value = "hotel_review")
 public class HotelReview implements Serializable {
 
+    @TableId(value = "review_id", type = IdType.AUTO)
     private Integer reviewId;
 
     private String content;
@@ -20,6 +26,7 @@ public class HotelReview implements Serializable {
 
     private Integer status;
 
+    @JSONField(format = "yyyy-MM-dd HH:mm:dd")
     private Timestamp createdAt;
 
     private Timestamp updatedAt;
