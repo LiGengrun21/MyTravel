@@ -9,10 +9,10 @@ eureka: # eureka client 是每个服务都要有的
     serviceUrl: # registry
       defaultZone: http://localhost:8762/eureka/ # 指定了Eureka服务器的地址。客户端（即服务实例）使用这个URL来注册自己，以及查找其他服务实例
 
-security:
-  oauth2:
-    resource:
-      user-info-uri: http://localhost:5000/uaa/users/current # auth-service
+#security:
+#  oauth2:
+#    resource:
+#      user-info-uri: http://localhost:5000/uaa/users/current # auth-service
 
 spring:
   rabbitmq:

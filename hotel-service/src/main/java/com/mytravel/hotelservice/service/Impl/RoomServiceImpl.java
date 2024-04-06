@@ -1,9 +1,13 @@
 package com.mytravel.hotelservice.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mytravel.hotelservice.entity.Room;
+import com.mytravel.hotelservice.entity.RoomBooked;
 import com.mytravel.hotelservice.entity.dto.HotelOrderDto;
+import com.mytravel.hotelservice.mapper.RoomBookedMapper;
 import com.mytravel.hotelservice.mapper.RoomMapper;
 import com.mytravel.hotelservice.service.RoomService;
+import com.mytravel.hotelservice.util.Result;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,25 +26,57 @@ public class RoomServiceImpl implements RoomService {
     RoomMapper roomMapper;
 
     @Autowired
+    RoomBookedMapper roomBookedMapper;
+
+    @Autowired
     RabbitTemplate rabbitTemplate;
 
     @Override
-    public int createOrder(HotelOrderDto hotelOrderDto) throws Exception {
+    public Result createOrder(HotelOrderDto hotelOrderDto) throws Exception {
 
-        // before creating order, check if the room is available
-        Room room=roomMapper.selectById(hotelOrderDto.getRoomId());
-        if (room.getRoomStatus()!=1){
-            return 0; //order creation fails
+        /**
+         * before creating order, check if the room at that time is available
+         */
+        int roomId=hotelOrderDto.getRoomId();
+        Room room=roomMapper.selectById(roomId);
+        // check if room exists
+        if (room==null){
+            return Result.FAIL("room not exists.");
         }
-        // if available, create and send the order info order-service
-        //System.out.println(hotelOrderDto.toString()+"XXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        // check room status, if not 1, then fails
+        if (room.getRoomStatus()!=1){
+            return Result.FAIL("room not available.");
+        }
+        // check if booked during the time
+        QueryWrapper<RoomBooked> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("room_id", roomId);
+        String checkin=hotelOrderDto.getCheckIn();
+        String checkout=hotelOrderDto.getCheckOut();
+        if (checkin==null || checkin.equals("")||checkout==null||checkout.equals("")){
+            return Result.FAIL("checkin and checkout time cannot be empty."); //these fields cannot be empty
+        }
+        // logic to decide if the booking is possible
+        queryWrapper.le("start_date",checkout);
+        queryWrapper.ge("end_date", checkin);
+        Long count=roomBookedMapper.selectCount(queryWrapper);
+        if (count!=0){
+            return Result.FAIL("room booked, please change your time slot.");
+        }
+        /**
+         * if available (count==0), create and send the order info order-service
+         */
         String jsonString=JSON.toJSONString(hotelOrderDto);
         // 发送JSON String
         rabbitTemplate.convertAndSend("order.exchange", "hotelOrderRoutingKey", jsonString);
-        // update room information (change room_status)
-        room.setRoomStatus(2); //room booked
-        int result=roomMapper.updateById(room);
-        return result;
+        /**
+         * update room information (add a new item to room_booked)
+         */
+        RoomBooked roomBooked=new RoomBooked();
+        roomBooked.setRoomId(roomId);
+        roomBooked.setStartDate(checkin);
+        roomBooked.setEndDate(checkout);
+        int result=roomBookedMapper.insert(roomBooked);
+        return Result.SUCCESS(result);
     }
 
     @Override

@@ -1,5 +1,5 @@
 server:
-  port: 7000
+  port: 7001
 spring:
   datasource:
     url: jdbc:mysql://localhost:3308/mytravel?useSSL=false&autoReconnect=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&serverTimezone=UTC

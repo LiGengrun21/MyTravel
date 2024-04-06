@@ -3,6 +3,7 @@ package com.mytravel.hotelservice.controller;
 import com.mytravel.hotelservice.entity.Room;
 import com.mytravel.hotelservice.entity.dto.HotelOrderDto;
 import com.mytravel.hotelservice.service.RoomService;
+import com.mytravel.hotelservice.util.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class HotelController {
     @Operation(summary = "reserve a room")
     @ResponseBody
     @PostMapping("/room/order")
-    public int createOrder(@RequestBody HotelOrderDto hotelOrderDto) throws Exception{
+    public Result createOrder(@RequestBody HotelOrderDto hotelOrderDto) throws Exception{
         return roomService.createOrder(hotelOrderDto);
     }
 

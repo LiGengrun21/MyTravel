@@ -3,11 +3,27 @@ spring:
     gateway:
       routes:
         - id: auth-service #唯一的id，建议与服务名称相吻合
-          uri: lb://AUTH-SERVICE   # lb = load balancing
+          uri: http://localhost:7000
           predicates:
             - Path=/user/**
+        - id: hotel-service
+          uri: http://localhost:7001   # uri: lb://hotel-service # lb = load balancing
+          predicates:
+            - Path=/hotel/**
+        - id: attraction-service
+          uri: http://localhost:7002
+          predicates:
+            - Path=/attraction/**
+        - id: order-service
+          uri: http://localhost:7003
+          predicates:
+            - Path=/order/**
+        - id: review-service
+          uri: http://localhost:7004
+          predicates:
+            - Path=/review/**
 server:
-  port: 4000
+  port: 8080
 
 management:
   endpoints:

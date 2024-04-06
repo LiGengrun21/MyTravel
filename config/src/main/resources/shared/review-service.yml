@@ -1,5 +1,5 @@
 server:
-  port: 6003
+  port: 7004
 spring:
   datasource:
     url: jdbc:mysql://localhost:3311/mytravel?useSSL=false&autoReconnect=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&serverTimezone=UTC
@@ -9,4 +9,4 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*Mapper.xml
-  type-aliases-package: com.mytravel.commentservice.entity
+  type-aliases-package: com.mytravel.reviewservice.entity
