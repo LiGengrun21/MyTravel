@@ -26,7 +26,6 @@ public class HotelReview implements Serializable {
 
     private Integer status;
 
-    @JSONField(format = "yyyy-MM-dd HH:mm:dd")
     private Timestamp createdAt;
 
     private Timestamp updatedAt;

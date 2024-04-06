@@ -1,5 +1,8 @@
 package com.mytravel.hotelservice.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -7,8 +10,10 @@ import lombok.Data;
  * @date 2024/4/1 10:43
  */
 @Data
+@TableName(value = "hotel")
 public class Hotel {
 
+    @TableId(value = "hotel_id", type = IdType.AUTO)
     private Integer hotelId;
 
     private String name;
