@@ -2,6 +2,7 @@ package com.mytravel.hotelservice.controller;
 
 import com.mytravel.hotelservice.entity.Room;
 import com.mytravel.hotelservice.entity.dto.HotelOrderDto;
+import com.mytravel.hotelservice.entity.dto.HotelSearchDto;
 import com.mytravel.hotelservice.service.RoomService;
 import com.mytravel.hotelservice.util.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -52,5 +53,18 @@ public class HotelController {
     @PostMapping("/room")
     public int createRoom(Room room) throws Exception{
         return roomService.createRoom(room);
+    }
+
+    /**
+     * 暂时没有做checkin checkout的筛选
+     * @param hotelSearchDto
+     * @return
+     * @throws Exception
+     */
+    @Operation(summary = "hotel room searching")
+    @ResponseBody
+    @GetMapping("/room/search") //待定，使用哪种rest
+    public Result search(HotelSearchDto hotelSearchDto) throws Exception{
+        return roomService.search(hotelSearchDto);
     }
 }

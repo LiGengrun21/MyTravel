@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mytravel.hotelservice.entity.Room;
 import com.mytravel.hotelservice.entity.RoomBooked;
 import com.mytravel.hotelservice.entity.dto.HotelOrderDto;
+import com.mytravel.hotelservice.entity.dto.HotelSearchDto;
+import com.mytravel.hotelservice.entity.dto.HotelSearchResult;
 import com.mytravel.hotelservice.mapper.RoomBookedMapper;
 import com.mytravel.hotelservice.mapper.RoomMapper;
 import com.mytravel.hotelservice.service.RoomService;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 
+import java.util.List;
 
 
 /**
@@ -86,7 +89,6 @@ public class RoomServiceImpl implements RoomService {
 
     /**
      * 只是一个简单的例子，没有考虑外键以及重复等问题，编写测试用例时要小心
-     *
      * @param room
      * @return
      * @throws Exception
@@ -94,5 +96,11 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public int createRoom(Room room) throws Exception {
         return roomMapper.insert(room);
+    }
+
+    @Override
+    public Result search(HotelSearchDto hotelSearchDto) throws Exception {
+        List<HotelSearchResult> searchResult=roomMapper.search(hotelSearchDto);
+        return Result.SUCCESS(searchResult);
     }
 }

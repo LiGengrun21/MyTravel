@@ -2,6 +2,7 @@ package com.mytravel.hotelservice.service;
 
 import com.mytravel.hotelservice.entity.Room;
 import com.mytravel.hotelservice.entity.dto.HotelOrderDto;
+import com.mytravel.hotelservice.entity.dto.HotelSearchDto;
 import com.mytravel.hotelservice.util.Result;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +18,6 @@ public interface RoomService {
     Room getRoomById(int roomId) throws Exception;
 
     int createRoom(Room room) throws Exception;
+
+    Result search(HotelSearchDto hotelSearchDto) throws Exception;
 }

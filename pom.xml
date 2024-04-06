@@ -42,7 +42,7 @@
         <module>order-service</module>
 <!--        <module>attraction-service</module>-->
         <module>hotel-service</module>
-<!--        <module>search-service</module>-->
+        <module>review-service</module>
     </modules>
 
 </project>
