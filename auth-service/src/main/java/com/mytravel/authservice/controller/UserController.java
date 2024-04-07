@@ -2,6 +2,7 @@ package com.mytravel.authservice.controller;
 
 import com.mytravel.authservice.entity.dto.User;
 import com.mytravel.authservice.service.UserService;
+import com.mytravel.authservice.util.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,9 @@ public class UserController {
     @GetMapping("/id")
     public User getUserById(@RequestParam int id) throws Exception{
         return userService.getUserById(id);
+    }
+
+    public Result updateUserProfile(User user) throws Exception{
+        return userService.updateUser(user);
     }
 }

@@ -2,6 +2,7 @@ package com.mytravel.authservice.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mytravel.authservice.entity.dto.User;
+import com.mytravel.authservice.util.Result;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface UserService extends IService<User> {
 
     User getUserById(int id) throws Exception;
 
-    int updateUser(User user) throws Exception;
+    Result updateUser(User user) throws Exception;
 
     User login(String username, String password) throws Exception;
 
