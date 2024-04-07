@@ -25,7 +25,7 @@ public class HotelController {
     /**
      * 前端发来的数据用一个dto包装
      * @param hotelOrderDto
-     * @return orderId
+     * @return result
      * @throws Exception
      */
     @Operation(summary = "reserve a room")
@@ -43,7 +43,7 @@ public class HotelController {
      */
     @Operation(summary = "get a room via roomId")
     @ResponseBody
-    @GetMapping("/room/id")
+    @GetMapping("/room")
     public Room getRoomById(int roomId) throws Exception{
         return roomService.getRoomById(roomId);
     }
@@ -57,14 +57,13 @@ public class HotelController {
 
     /**
      * 除了checkin和checkout的所有字段必须填全
-     *
      * @param hotelSearchDto
      * @return
      * @throws Exception
      */
     @Operation(summary = "hotel room searching")
     @ResponseBody
-    @GetMapping("/room/search") //待定，使用哪种rest
+    @GetMapping("/room/search")
     public Result search(HotelSearchDto hotelSearchDto) throws Exception{
         return roomService.search(hotelSearchDto);
     }
