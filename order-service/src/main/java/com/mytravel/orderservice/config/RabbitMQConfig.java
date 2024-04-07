@@ -19,9 +19,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
     @Bean
-    Queue queue() {
-        Queue queue=new Queue("hotelOrder.queue", false); //durable为false意味着队列中的消息在RabbitMQ服务重启后会丢失
-        return queue;
+    Queue queue1() {
+        Queue queue1=new Queue("hotelOrder.queue", false); //durable为false意味着队列中的消息在RabbitMQ服务重启后会丢失
+        return queue1;
+    }
+
+    @Bean
+    Queue queue2() {
+        Queue queue2=new Queue("attractionOrder.queue", false);
+        return queue2;
     }
 
     @Bean
@@ -32,22 +38,17 @@ public class RabbitMQConfig {
 
     /**
      * 绑定交换机和队列，所有带有hotelOrderRoutingKey的消息都被路由到这个队列
-     * @param queue
+     * @param queue1
      * @param exchange
      * @return
      */
     @Bean
-    Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("hotelOrderRoutingKey");
+    Binding binding1(Queue queue1, DirectExchange exchange) {
+        return BindingBuilder.bind(queue1).to(exchange).with("hotelOrderRoutingKey");
     }
 
-//    /**
-//     * 因为producer要发送object对象
-//     * @return Jackson2JsonMessageConverter
-//     */
-//    @Bean
-//    public MessageConverter  producerJackson2MessageConverter(ObjectMapper objectMapper) {
-//        return new Jackson2JsonMessageConverter(objectMapper);
-//    }
-
+    @Bean
+    Binding binding2(Queue queue2, DirectExchange exchange) {
+        return BindingBuilder.bind(queue2).to(exchange).with("attractionOrderRoutingKey");
+    }
 }

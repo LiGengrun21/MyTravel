@@ -27,7 +27,6 @@ public class HotelOrderMQListener {
      */
     @RabbitHandler
     public void createHotelOrder(String jsonString){
-
         HotelOrderDto hotelOrderDto = JSONObject.parseObject(jsonString, HotelOrderDto.class);
         System.out.println("hotel order information:"+hotelOrderDto);
         HotelOrder hotelOrder=new HotelOrder();

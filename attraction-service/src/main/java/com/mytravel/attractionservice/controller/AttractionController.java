@@ -1,5 +1,7 @@
 package com.mytravel.attractionservice.controller;
 
+import com.mytravel.attractionservice.entity.Attraction;
+import com.mytravel.attractionservice.entity.dto.AttractionOrderDto;
 import com.mytravel.attractionservice.service.AttractionService;
 import com.mytravel.attractionservice.util.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,18 +21,25 @@ public class AttractionController {
     @Autowired
     private AttractionService attractionService;
 
-//    @Operation(summary = "reserve a room")
-//    @ResponseBody
-//    @PostMapping("/order")
-//    public Result createOrder(@RequestBody HotelOrderDto hotelOrderDto) throws Exception{
-//        return
-//    }
+    @Operation(summary = "make attraction reservations")
+    @ResponseBody
+    @PostMapping("/order")
+    public Result createOrder(@RequestBody AttractionOrderDto attractionOrderDto) throws Exception{
+        return attractionService.createOrder(attractionOrderDto);
+    }
 
     @Operation(summary = "get a tourist attraction via attractionId")
     @ResponseBody
     @GetMapping
     public Result getAttractionById(int attractionId) throws Exception{
         return attractionService.getAttractionById(attractionId);
+    }
+
+    @Operation(summary = "create a new tourist attraction (used by admin)")
+    @ResponseBody
+    @PostMapping
+    public Result createAttraction(Attraction attraction) throws Exception{
+        return attractionService.createAttraction(attraction);
     }
 
     /**

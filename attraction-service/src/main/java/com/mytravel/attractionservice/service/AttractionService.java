@@ -1,5 +1,7 @@
 package com.mytravel.attractionservice.service;
 
+import com.mytravel.attractionservice.entity.Attraction;
+import com.mytravel.attractionservice.entity.dto.AttractionOrderDto;
 import com.mytravel.attractionservice.util.Result;
 import org.springframework.stereotype.Service;
 
@@ -11,4 +13,10 @@ import org.springframework.stereotype.Service;
 public interface AttractionService {
 
     Result getAttractionById(int attractionId) throws Exception;
+
+    Result createAttraction(Attraction attraction) throws Exception;
+
+    Result createOrder(AttractionOrderDto attractionOrderDto) throws Exception;
 }
+
+
