@@ -56,7 +56,8 @@ public class HotelController {
     }
 
     /**
-     * 暂时没有做checkin checkout的筛选
+     * 除了checkin和checkout的所有字段必须填全
+     *
      * @param hotelSearchDto
      * @return
      * @throws Exception

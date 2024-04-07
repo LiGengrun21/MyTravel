@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -100,7 +101,34 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Result search(HotelSearchDto hotelSearchDto) throws Exception {
-        List<HotelSearchResult> searchResult=roomMapper.search(hotelSearchDto);
-        return Result.SUCCESS(searchResult);
+        List<HotelSearchResult> searchResultList=roomMapper.search(hotelSearchDto); //尚未筛选checkin和checkout时间
+        /**
+         * no checkin and checkout conditions
+         */
+        String checkin=hotelSearchDto.getCheckinDate();
+        String checkout=hotelSearchDto.getCheckoutDate();
+        if (checkin==null||checkin.equals("")||checkout==null||checkout.equals("")){
+            return Result.SUCCESS(searchResultList);
+        }
+        /**
+         * filter
+         */
+        List<HotelSearchResult> finalList=new ArrayList<>();
+        for (HotelSearchResult hotelSearchResult : searchResultList) {
+            int roomId=hotelSearchResult.getRoomId();
+            //在room_booked中查询是否冲突，若冲突，则删除这一条
+            QueryWrapper<RoomBooked> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("room_id", roomId);
+            queryWrapper.le("start_date",hotelSearchDto.getCheckoutDate());
+            queryWrapper.ge("end_date", hotelSearchDto.getCheckinDate());
+            Long count=roomBookedMapper.selectCount(queryWrapper);
+            if (count!=0){
+                continue;
+            }
+            else{
+                finalList.add(hotelSearchResult);
+            }
+        }
+        return Result.SUCCESS(finalList);
     }
 }

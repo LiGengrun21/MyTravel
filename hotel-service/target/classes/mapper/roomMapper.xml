@@ -10,7 +10,7 @@
                  join room_type on room_type=room_type.room_type_id
         where match(hotel.name) against (#{keyword})
           and room_type.room_type_name= #{roomType}
-          and price between #{priceMin} and #{priceMax}
+          and (price between #{priceMin} and #{priceMax})
           and room_status=1;
     </select>
 </mapper>
