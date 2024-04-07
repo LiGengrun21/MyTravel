@@ -101,7 +101,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Result search(HotelSearchDto hotelSearchDto) throws Exception {
-        List<HotelSearchResult> searchResultList=roomMapper.search(hotelSearchDto); //尚未筛选checkin和checkout时间
+        List<HotelSearchResult> searchResultList=roomMapper.search(hotelSearchDto);
         /**
          * no checkin and checkout conditions
          */
@@ -111,7 +111,7 @@ public class RoomServiceImpl implements RoomService {
             return Result.SUCCESS(searchResultList);
         }
         /**
-         * filter
+         * filter by checkin and checkout time
          */
         List<HotelSearchResult> finalList=new ArrayList<>();
         for (HotelSearchResult hotelSearchResult : searchResultList) {

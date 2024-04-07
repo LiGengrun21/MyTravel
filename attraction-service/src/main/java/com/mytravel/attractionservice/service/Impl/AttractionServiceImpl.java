@@ -3,12 +3,15 @@ package com.mytravel.attractionservice.service.Impl;
 import com.alibaba.fastjson.JSON;
 import com.mytravel.attractionservice.entity.Attraction;
 import com.mytravel.attractionservice.entity.dto.AttractionOrderDto;
+import com.mytravel.attractionservice.entity.dto.AttractionSearchDto;
 import com.mytravel.attractionservice.mapper.AttractionMapper;
 import com.mytravel.attractionservice.service.AttractionService;
 import com.mytravel.attractionservice.util.Result;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Li Gengrun
@@ -63,5 +66,17 @@ public class AttractionServiceImpl implements AttractionService {
         attraction.setTicketsAvailable(remainingTickets- attractionOrderDto.getVisitorsNumber());
         int result=attractionMapper.updateById(attraction);
         return Result.SUCCESS(result);
+    }
+
+    @Override
+    public Result search(AttractionSearchDto attractionSearchDto) throws Exception {
+        /**
+         * 如果关键词为空，返回全部结果 （有点问题，但是暂时不管了）
+         */
+        if (attractionSearchDto.getKeyword()==""){
+            return Result.SUCCESS(attractionMapper.selectList(null));
+        }
+        List<Attraction> searchResultList=attractionMapper.search(attractionSearchDto);
+        return Result.SUCCESS(searchResultList);
     }
 }

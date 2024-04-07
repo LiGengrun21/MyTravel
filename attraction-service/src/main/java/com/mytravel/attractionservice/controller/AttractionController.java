@@ -2,6 +2,7 @@ package com.mytravel.attractionservice.controller;
 
 import com.mytravel.attractionservice.entity.Attraction;
 import com.mytravel.attractionservice.entity.dto.AttractionOrderDto;
+import com.mytravel.attractionservice.entity.dto.AttractionSearchDto;
 import com.mytravel.attractionservice.service.AttractionService;
 import com.mytravel.attractionservice.util.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,14 +45,14 @@ public class AttractionController {
 
     /**
      * 搜索符合条件的景点
-     * @param
+     * @param attractionSearchDto
      * @return
      * @throws Exception
      */
-//    @Operation(summary = "tourist attraction searching")
-//    @ResponseBody
-//    @GetMapping("/search")
-//    public Result search(HotelSearchDto hotelSearchDto) throws Exception{
-//        return roomService.search(hotelSearchDto);
-//    }
+    @Operation(summary = "tourist attraction searching")
+    @ResponseBody
+    @GetMapping("/search")
+    public Result search(AttractionSearchDto attractionSearchDto) throws Exception{
+        return attractionService.search(attractionSearchDto);
+    }
 }
