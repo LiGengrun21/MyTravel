@@ -1,7 +1,9 @@
 package com.mytravel.reviewservice.controller;
 
+import com.mytravel.reviewservice.entity.AttractionReview;
 import com.mytravel.reviewservice.entity.HotelReview;
 import com.mytravel.reviewservice.entity.dto.HotelReviewParam;
+import com.mytravel.reviewservice.service.AttractionReviewService;
 import com.mytravel.reviewservice.service.HotelReviewService;
 import com.mytravel.reviewservice.util.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +22,9 @@ public class ReviewController {
 
     @Autowired
     private HotelReviewService hotelReviewService;
+
+    @Autowired
+    private AttractionReviewService attractionReviewService;
 
     @Operation(summary = "create a hotel review")
     @ResponseBody
@@ -67,4 +72,29 @@ public class ReviewController {
         return hotelReviewService.deleteHotelReview(hotelReviewParam);
     }
 
+    /**
+     * 展示某个景点的评论区
+     * @param attractionId
+     * @return
+     * @throws Exception
+     */
+    @Operation(summary = "get the review list of a tourist attraction")
+    @ResponseBody
+    @GetMapping("attraction")
+    public Result getReviewByAttractionId(int attractionId) throws Exception{
+        return attractionReviewService.getReviewByAttractionId(attractionId);
+    }
+
+    /**
+     * 发表景点评论
+     * @param attractionReview
+     * @return
+     * @throws Exception
+     */
+    @Operation(summary = "post a new review on the attraction")
+    @ResponseBody
+    @PostMapping("/attraction")
+    public Result createAttractionReview(AttractionReview attractionReview) throws Exception{
+        return attractionReviewService.createAttractionReview(attractionReview);
+    }
 }

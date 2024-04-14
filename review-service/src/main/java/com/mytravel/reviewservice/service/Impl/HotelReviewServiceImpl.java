@@ -45,6 +45,9 @@ public class HotelReviewServiceImpl implements HotelReviewService {
         hotelReview.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         hotelReview.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         int result=hotelReviewMapper.insert(hotelReview);
+        if (result==0){
+            return Result.FAIL("Failed to post a review on the hotel");
+        }
         /**
          * calculate average rating
          */

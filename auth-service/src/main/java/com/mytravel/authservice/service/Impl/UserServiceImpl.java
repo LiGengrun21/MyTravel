@@ -1,6 +1,8 @@
 package com.mytravel.authservice.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mytravel.authservice.entity.dto.LoginParam;
 import com.mytravel.authservice.entity.dto.User;
 import com.mytravel.authservice.mapper.UserMapper;
 import com.mytravel.authservice.service.UserService;
@@ -48,8 +50,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public User login(String username, String password) throws Exception {
-        return null;
+    public Result login(LoginParam loginParam) throws Exception {
+        if (loginParam==null){
+            return Result.FAIL("Login failed due to lack of login param!");
+        }
+        String username=loginParam.getUsername();
+        String password= loginParam.getPassword();
+        String role= loginParam.getRole();
+        if (username==null||username.equals("")||password==null||password.equals("")||role==null||role.equals("")){
+            return Result.FAIL("Login failed due to no username or password!");
+        }
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        queryWrapper.eq("password",password);
+        queryWrapper.eq("role",role);
+        User loginUser=userMapper.selectOne(queryWrapper);
+        if (loginUser==null){
+            return Result.FAIL("Login failed due to wrong password or username!");
+        }
+        return Result.SUCCESS(loginUser);
     }
 
     @Override
