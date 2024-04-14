@@ -1,8 +1,10 @@
 package com.mytravel.hotelservice.controller;
 
+import com.mytravel.hotelservice.entity.Hotel;
 import com.mytravel.hotelservice.entity.Room;
 import com.mytravel.hotelservice.entity.dto.HotelOrderDto;
 import com.mytravel.hotelservice.entity.dto.HotelSearchDto;
+import com.mytravel.hotelservice.service.HotelService;
 import com.mytravel.hotelservice.service.RoomService;
 import com.mytravel.hotelservice.util.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,6 +23,9 @@ public class HotelController {
 
     @Autowired
     private RoomService roomService;
+
+    @Autowired
+    private HotelService hotelService;
 
     /**
      * 前端发来的数据用一个dto包装
@@ -44,8 +49,15 @@ public class HotelController {
     @Operation(summary = "get a room via roomId")
     @ResponseBody
     @GetMapping("/room")
-    public Room getRoomById(int roomId) throws Exception{
+    public Room getRoomById(@RequestParam int roomId) throws Exception{
         return roomService.getRoomById(roomId);
+    }
+
+    @Operation(summary = "get a hotel via hotelId")
+    @ResponseBody
+    @GetMapping
+    public Hotel getHotelById(@RequestParam int hotelId) throws Exception{
+        return hotelService.getHotelById(hotelId);
     }
 
     @Operation(summary = "add a new room")

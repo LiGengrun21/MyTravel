@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface AttractionService {
 
-    Result getAttractionById(int attractionId) throws Exception;
+    Attraction getAttractionById(int attractionId) throws Exception;
 
     Result createAttraction(Attraction attraction) throws Exception;
 

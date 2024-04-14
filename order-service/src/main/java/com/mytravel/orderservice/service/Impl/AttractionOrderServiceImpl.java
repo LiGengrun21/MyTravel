@@ -1,12 +1,17 @@
 package com.mytravel.orderservice.service.Impl;
 
+import com.alibaba.fastjson.JSON;
+import com.mytravel.orderservice.client.AttractionServiceClient;
 import com.mytravel.orderservice.client.AuthServiceClient;
+import com.mytravel.orderservice.client.pojo.Attraction;
 import com.mytravel.orderservice.entity.AttractionOrder;
+import com.mytravel.orderservice.entity.dto.AttractionOrderEmailDto;
 import com.mytravel.orderservice.entity.dto.DetailedAttractionOrderDto;
 import com.mytravel.orderservice.entity.dto.User;
 import com.mytravel.orderservice.mapper.AttractionOrderMapper;
 import com.mytravel.orderservice.service.AttractionOrderService;
 import com.mytravel.orderservice.util.Result;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +27,12 @@ public class AttractionOrderServiceImpl implements AttractionOrderService {
 
     @Autowired
     AuthServiceClient authServiceClient;
+
+    @Autowired
+    AttractionServiceClient attractionServiceClient;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     @Override
     public Result getDetailedAttractionOrder(int orderId) throws Exception {
@@ -66,6 +77,22 @@ public class AttractionOrderServiceImpl implements AttractionOrderService {
         }
         attractionOrder.setOrderStatus(2); // pay
         attractionOrderMapper.updateById(attractionOrder);
+        /**
+         * gather info from auth and attraction services
+         */
+        AttractionOrderEmailDto attractionOrderEmailDto=new AttractionOrderEmailDto();
+        User user=authServiceClient.getUserById(attractionOrder.getUserId());
+        Attraction attraction=attractionServiceClient.getAttractionById(attractionOrder.getAttractionId());
+        attractionOrderEmailDto.setUsername(user.getUsername());
+        attractionOrderEmailDto.setAttractionName(attraction.getName());
+        attractionOrderEmailDto.setAmount(attractionOrder.getPrice());
+        attractionOrderEmailDto.setVisitorsNumber(attractionOrder.getVisitorsNumber());
+        attractionOrderEmailDto.setEmail(user.getEmail());
+        /**
+         * send attraction order info to notification service
+         */
+        String jsonString= JSON.toJSONString(attractionOrderEmailDto);
+        rabbitTemplate.convertAndSend("email.exchange", "attractionOrderEmailRoutingKey", jsonString);
         return Result.SUCCESS(attractionOrder);
     }
 

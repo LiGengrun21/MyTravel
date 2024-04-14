@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.Attr;
 
 /**
  * @author Li Gengrun
@@ -32,7 +33,7 @@ public class AttractionController {
     @Operation(summary = "get a tourist attraction via attractionId")
     @ResponseBody
     @GetMapping
-    public Result getAttractionById(int attractionId) throws Exception{
+    public Attraction getAttractionById(@RequestParam int attractionId) throws Exception{
         return attractionService.getAttractionById(attractionId);
     }
 

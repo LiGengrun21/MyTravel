@@ -27,8 +27,8 @@ public class AttractionServiceImpl implements AttractionService {
     private RabbitTemplate rabbitTemplate;
 
     @Override
-    public Result getAttractionById(int attractionId) throws Exception {
-        return Result.SUCCESS(attractionMapper.selectById(attractionId));
+    public Attraction getAttractionById(int attractionId) throws Exception {
+        return attractionMapper.selectById(attractionId);
     }
 
     @Override

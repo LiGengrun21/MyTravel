@@ -8,10 +8,7 @@ import com.mytravel.orderservice.util.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Li Gengrun
@@ -48,18 +45,26 @@ public class OrderController {
         return attractionOrderService.getDetailedAttractionOrder(orderId);
     }
 
-    @Operation(summary = "confirm and pay the order")
+    @Operation(summary = "confirm and pay attraction order")
     @ResponseBody
     @GetMapping("/attraction/confirm")
-    public Result conformOrder(int orderId) throws Exception{
+    public Result confirmAttractionOrder(int orderId) throws Exception{
         return attractionOrderService.confirmAttractionOrder(orderId);
     }
 
     @Operation(summary = "cancel the order")
     @ResponseBody
     @GetMapping("/attraction/cancel")
-    public Result cancelOrder(int orderId) throws Exception{
+    public Result cancelAttractionOrder(int orderId) throws Exception{
         return attractionOrderService.cancelAttractionOrder(orderId);
     }
+
+    @Operation(summary = "confirm and pay hotel order")
+    @ResponseBody
+    @PutMapping("/hotel/confirm")
+    public Result confirmHotelOrder(int orderId) throws Exception{
+        return hotelOrderService.confirmHotelOrder(orderId);
+    }
+
 
 }

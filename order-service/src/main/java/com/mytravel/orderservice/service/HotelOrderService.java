@@ -1,6 +1,7 @@
 package com.mytravel.orderservice.service;
 
 import com.mytravel.orderservice.entity.dto.DetailedHotelOrderDto;
+import com.mytravel.orderservice.util.Result;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,4 +12,6 @@ import org.springframework.stereotype.Service;
 public interface HotelOrderService {
 
     DetailedHotelOrderDto getDetailedHotelOrder(int orderId) throws Exception;
+
+    Result confirmHotelOrder(int orderId) throws Exception;
 }

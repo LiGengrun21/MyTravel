@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(name = "auth-service", path = "/user")
 @Component
 public interface AuthServiceClient {
-    @GetMapping(value = "/id")
+    @GetMapping
     User getUserById(@RequestParam int id) throws Exception;
 }
