@@ -1,7 +1,3 @@
-logging:
-  level:
-    org.springframework.security: DEBUG
-
 eureka: # eureka client 是每个服务都要有的
   instance:
     prefer-ip-address: true # 在Eureka服务注册表中，是否优先使用IP地址而不是主机名来表示服务实例
@@ -31,8 +27,5 @@ resilience4j.circuitbreaker:
       failureRateThreshold: 50 # 失败率阈值为50％
       ringBufferSizeInClosedState: 5 # 断路器在闭合状态下的环形缓冲区大小为5
       ringBufferSizeInHalfOpenState: 3 # 在半开状态下的环形缓冲区大小为3
-#  instances:
-#    hotelOrderProducer:
-#      baseConfig: default
-#      waitDurationInOpenState: 6000 # 此设置定义了熔断器处于打开状态（Open State）的持续时间，单位为毫秒。在这个例子中，设置为 60000 毫秒，即 60 秒。熔断器在打开状态时，所有对应的方法调用都会被快速失败（即不执行实际的操作），而是直接返回错误或调用回退方法。当这段时间过去后，熔断器将进入半开状态（Half-Open State），尝试允许少量的调用通过，以检测后端服务是否已经恢复正常。
-#      failureRateThreshold: 50 # 只有当80%的请求失败时，熔断器才会从关闭状态转换到打开状态
+
+

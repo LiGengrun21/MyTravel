@@ -10,3 +10,12 @@ spring:
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*Mapper.xml
   type-aliases-package: com.mytravel.authservice.entity.dto
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0 # 采样率100%
+
+logging:
+  pattern:
+    level: ${spring.application.name:}, %X{traceId:-}, %X{spanId:-}
