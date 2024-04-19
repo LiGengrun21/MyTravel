@@ -21,3 +21,18 @@ spring:
 #    virtual-host: /myTravel # 每个user有一个自己的虚拟主机，以便于隔离，默认是/
     username: guest
     password: guest
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      minimumNumberOfCalls: 5 # 最小调用次数为5次
+      permittedNumberOfCallsInHalfOpenState: 3
+      waitDurationInOpenState: 10s # 时间窗口为10秒
+      failureRateThreshold: 50 # 失败率阈值为50％
+      ringBufferSizeInClosedState: 5 # 断路器在闭合状态下的环形缓冲区大小为5
+      ringBufferSizeInHalfOpenState: 3 # 在半开状态下的环形缓冲区大小为3
+#  instances:
+#    hotelOrderProducer:
+#      baseConfig: default
+#      waitDurationInOpenState: 6000 # 此设置定义了熔断器处于打开状态（Open State）的持续时间，单位为毫秒。在这个例子中，设置为 60000 毫秒，即 60 秒。熔断器在打开状态时，所有对应的方法调用都会被快速失败（即不执行实际的操作），而是直接返回错误或调用回退方法。当这段时间过去后，熔断器将进入半开状态（Half-Open State），尝试允许少量的调用通过，以检测后端服务是否已经恢复正常。
+#      failureRateThreshold: 50 # 只有当80%的请求失败时，熔断器才会从关闭状态转换到打开状态

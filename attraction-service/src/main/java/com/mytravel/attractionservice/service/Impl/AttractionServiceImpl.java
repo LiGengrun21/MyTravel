@@ -7,6 +7,7 @@ import com.mytravel.attractionservice.entity.dto.AttractionSearchDto;
 import com.mytravel.attractionservice.mapper.AttractionMapper;
 import com.mytravel.attractionservice.service.AttractionService;
 import com.mytravel.attractionservice.util.Result;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,15 @@ public class AttractionServiceImpl implements AttractionService {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @CircuitBreaker(name = "attractionOrderCircuitBreaker", fallbackMethod = "sendMessageFallback")
+    public void sendOrderMessage(String jsonString) {
+        rabbitTemplate.convertAndSend("order.exchange", "attractionOrderRoutingKey", jsonString);
+    }
+
+    public void sendMessageFallback(Throwable t) {
+        System.out.println("Failed to send attraction-order message, service might be down. " + t.getMessage());
+    }
 
     @Override
     public Attraction getAttractionById(int attractionId) throws Exception {
@@ -59,7 +69,7 @@ public class AttractionServiceImpl implements AttractionService {
          * If yes, send the order info to order-service.
          */
         String jsonString= JSON.toJSONString(attractionOrderDto);
-        rabbitTemplate.convertAndSend("order.exchange", "attractionOrderRoutingKey", jsonString);
+        sendOrderMessage(jsonString);
         /**
          * Update available ticket number.
          */

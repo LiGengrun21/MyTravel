@@ -57,7 +57,6 @@ public class UserController {
     @ResponseBody
     @GetMapping("/login")
     public Result login(LoginParam loginParam) throws Exception{
-        System.out.println("login controller!!!!!!!!!!!!!!!!!1");
         return userService.login(loginParam);
     }
 }

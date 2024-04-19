@@ -10,6 +10,7 @@ import com.mytravel.hotelservice.mapper.RoomBookedMapper;
 import com.mytravel.hotelservice.mapper.RoomMapper;
 import com.mytravel.hotelservice.service.RoomService;
 import com.mytravel.hotelservice.util.Result;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,15 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     RabbitTemplate rabbitTemplate;
+
+    @CircuitBreaker(name = "hotelOrderCircuitBreaker", fallbackMethod = "sendMessageFallback")
+    public void sendOrderMessage(String jsonString) {
+        rabbitTemplate.convertAndSend("order.exchange", "hotelOrderRoutingKey", jsonString);
+    }
+
+    public void sendMessageFallback(Throwable t) {
+        System.out.println("Failed to send hotel-order message, service might be down. " + t.getMessage());
+    }
 
     @Override
     public Result createOrder(HotelOrderDto hotelOrderDto) throws Exception {
@@ -71,7 +81,8 @@ public class RoomServiceImpl implements RoomService {
          */
         String jsonString=JSON.toJSONString(hotelOrderDto);
         // 发送JSON String
-        rabbitTemplate.convertAndSend("order.exchange", "hotelOrderRoutingKey", jsonString);
+        //rabbitTemplate.convertAndSend("order.exchange", "hotelOrderRoutingKey", jsonString);
+        sendOrderMessage(jsonString);
         /**
          * update room information (add a new item to room_booked)
          */
