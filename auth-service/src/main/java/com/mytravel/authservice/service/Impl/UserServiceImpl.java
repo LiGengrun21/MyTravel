@@ -7,10 +7,13 @@ import com.mytravel.authservice.entity.dto.User;
 import com.mytravel.authservice.mapper.UserMapper;
 import com.mytravel.authservice.service.UserService;
 import com.mytravel.authservice.util.Result;
+//import com.mytravel.authservice.util.jwt.JwtTokenUtil;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Li Gengrun
@@ -21,6 +24,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     UserMapper userMapper;
+
+//    @Resource
+//    JwtTokenUtil jwtTokenUtil;
+
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     @Override
     public int createUser(User user) throws Exception {
@@ -66,13 +75,51 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.eq("role",role);
         User loginUser=userMapper.selectOne(queryWrapper);
         if (loginUser==null){
-            return Result.FAIL("Login failed due to wrong password or username!");
+            return Result.FAIL("Login failed due to wrong username or password!");
         }
+//        PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+//        boolean isAuthenticated=passwordEncoder.matches(password, loginUser.getPassword());
+//        if (!isAuthenticated){
+//            return Result.FAIL("Password is not correct!");
+//        }
+//        Map<String, Object> tokenMap = jwtTokenUtil.generateTokenAndRefreshToken(Integer.toString(loginUser.getId()), loginUser.getUsername());
+//        System.out.println(tokenMap);
         return Result.SUCCESS(loginUser);
     }
 
     @Override
     public List<User> getUserList() {
         return userMapper.selectList(null);
+    }
+
+    @Override
+    public Result register(User user) throws Exception {
+        /**
+         * check if email registered before
+         */
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("email",user.getEmail());
+        List<User> userList=userMapper.selectList(queryWrapper);
+        if (userList==null){
+            /**
+             *  create a user
+             */
+            User user1=new User();
+            user1.setEmail(user.getEmail());
+            user1.setPassword(user.getPassword());
+            user1.setUsername(user.getUsername());
+            user1.setRole("user");
+            user1.setStatus(1);
+            int result=userMapper.insert(user1);
+            if (result==0){
+                return Result.FAIL("Sign-up failed!");
+            }
+            else {
+                return Result.SUCCESS(userMapper.selectOne(queryWrapper));
+            }
+        }
+        else{
+            return Result.FAIL("The email has been registered already");
+        }
     }
 }

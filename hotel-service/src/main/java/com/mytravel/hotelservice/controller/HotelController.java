@@ -36,7 +36,7 @@ public class HotelController {
     @Operation(summary = "reserve a room")
     @ResponseBody
     @PostMapping("/room/order")
-    public Result createOrder(@RequestBody HotelOrderDto hotelOrderDto) throws Exception{
+    public Result createOrder(HotelOrderDto hotelOrderDto) throws Exception{
         return roomService.createOrder(hotelOrderDto);
     }
 
@@ -78,5 +78,19 @@ public class HotelController {
     @GetMapping("/room/search")
     public Result search(HotelSearchDto hotelSearchDto) throws Exception{
         return roomService.search(hotelSearchDto);
+    }
+
+    @Operation(summary = "update a hotel")
+    @ResponseBody
+    @PutMapping
+    public Result updateHotel(Hotel hotel) throws Exception {
+        return Result.SUCCESS(hotelService.updateHotel(hotel));
+    }
+
+    @Operation(summary = "delete a hotel")
+    @ResponseBody
+    @DeleteMapping
+    public Result deleteHotel(int hotelId) throws Exception{
+        return Result.SUCCESS(hotelService.deleteHotel(hotelId));
     }
 }

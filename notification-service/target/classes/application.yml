@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: notification-service
-  cloud:
-    fail-fast: true
-    password: ${CONFIG_SERVICE_PASSWORD}
-    username: user
-  config:
-    import: optional:configserver:http://localhost:8888

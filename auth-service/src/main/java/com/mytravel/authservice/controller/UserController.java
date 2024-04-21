@@ -18,7 +18,7 @@ import java.util.List;
 
 @Tag(name="User",description = "auth-service, User")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/auth")
 @CrossOrigin(origins = "*")
 public class UserController {
 
@@ -58,5 +58,12 @@ public class UserController {
     @GetMapping("/login")
     public Result login(LoginParam loginParam) throws Exception{
         return userService.login(loginParam);
+    }
+
+    @Operation(summary = "/register")
+    @ResponseBody
+    @PostMapping("/login")
+    public Result register(User user) throws Exception{
+        return userService.register(user);
     }
 }

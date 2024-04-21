@@ -47,14 +47,14 @@ public class OrderController {
 
     @Operation(summary = "confirm and pay attraction order")
     @ResponseBody
-    @GetMapping("/attraction/confirm")
+    @PutMapping("/attraction/confirm")
     public Result confirmAttractionOrder(int orderId) throws Exception{
         return attractionOrderService.confirmAttractionOrder(orderId);
     }
 
     @Operation(summary = "cancel the order")
     @ResponseBody
-    @GetMapping("/attraction/cancel")
+    @PutMapping("/attraction/cancel")
     public Result cancelAttractionOrder(int orderId) throws Exception{
         return attractionOrderService.cancelAttractionOrder(orderId);
     }

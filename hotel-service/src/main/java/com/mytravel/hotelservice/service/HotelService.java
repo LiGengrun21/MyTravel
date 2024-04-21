@@ -1,7 +1,10 @@
 package com.mytravel.hotelservice.service;
 
 import com.mytravel.hotelservice.entity.Hotel;
+import com.mytravel.hotelservice.util.Result;
 import org.springframework.stereotype.Service;
+
+import java.lang.module.ResolutionException;
 
 /**
  * @author Li Gengrun
@@ -11,4 +14,8 @@ import org.springframework.stereotype.Service;
 public interface HotelService {
 
     Hotel getHotelById(int hotelId) throws Exception;
+
+    Result updateHotel(Hotel hotel) throws Exception;
+
+    Result deleteHotel(int hotelId) throws Exception;
 }

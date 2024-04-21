@@ -26,4 +26,6 @@ public interface UserService extends IService<User> {
     Result login(LoginParam loginParam) throws Exception;
 
     List<User> getUserList() throws Exception;
+
+    Result register(User user) throws Exception;
 }
