@@ -14,4 +14,6 @@ public interface HotelOrderService {
     DetailedHotelOrderDto getDetailedHotelOrder(int orderId) throws Exception;
 
     Result confirmHotelOrder(int orderId) throws Exception;
+
+    Result getOrderListByUser(int userId) throws Exception;
 }

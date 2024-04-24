@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mytravel.attractionservice.mapper.AttractionMapper">
+    <select id="search" parameterType="com.mytravel.attractionservice.entity.dto.AttractionSearchDto" resultType="com.mytravel.attractionservice.entity.Attraction">
+        SELECT * FROM attraction
+        WHERE match(name) against (#{keyword})
+          AND city=#{city}
+          AND price BETWEEN #{priceMin} AND #{priceMax};
+    </select>
+</mapper>

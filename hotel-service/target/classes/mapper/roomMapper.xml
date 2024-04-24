@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mytravel.hotelservice.mapper.RoomMapper">
+    <select id="search" resultType="com.mytravel.hotelservice.entity.dto.HotelSearchResult" parameterType="com.mytravel.hotelservice.entity.dto.HotelSearchDto">
+        select hotel.*, room.room_id, room.room_type as room_type_id, room_type.room_type_name, room.price, room.room_number
+        from room
+                 join hotel on room.hotel_id=hotel.hotel_id
+                 join room_type on room_type=room_type.room_type_id
+        where match(hotel.name) against (#{keyword})
+          and room_type.room_type_name= #{roomType}
+          and (price between #{priceMin} and #{priceMax})
+          and room_status=1;
+    </select>
+</mapper>

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="Hotel",description = "hotel-service")
 @RestController
 @RequestMapping("/hotel")
+@CrossOrigin(origins = "*")
 public class HotelController {
 
     @Autowired

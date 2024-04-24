@@ -1,6 +1,7 @@
 package com.mytravel.orderservice.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mytravel.orderservice.client.AuthServiceClient;
 import com.mytravel.orderservice.client.HotelServiceClient;
 import com.mytravel.orderservice.client.pojo.Hotel;
@@ -16,6 +17,8 @@ import com.mytravel.orderservice.util.Result;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Li Gengrun
@@ -102,5 +105,13 @@ public class HotelOrderServiceImpl implements HotelOrderService {
         String jsonString= JSON.toJSONString(hotelOrderEmailDto);
         rabbitTemplate.convertAndSend("email.exchange", "hotelOrderEmailRoutingKey", jsonString);
         return Result.SUCCESS(hotelOrder);
+    }
+
+    @Override
+    public Result getOrderListByUser(int userId) throws Exception {
+        QueryWrapper<HotelOrder> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        List<HotelOrder> orderList=hotelOrderMapper.selectList(queryWrapper);
+        return Result.SUCCESS(orderList);
     }
 }

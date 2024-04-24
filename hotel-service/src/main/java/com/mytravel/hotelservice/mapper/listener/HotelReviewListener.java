@@ -1,4 +1,4 @@
-package com.mytravel.hotelservice.listener;
+package com.mytravel.hotelservice.mapper.listener;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mytravel.hotelservice.entity.Hotel;

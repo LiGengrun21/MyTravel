@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="Order",description = "order-service")
 @RestController
 @RequestMapping("/order")
+@CrossOrigin(origins = "*")
 public class OrderController {
 
     @Autowired
@@ -61,9 +62,16 @@ public class OrderController {
 
     @Operation(summary = "confirm and pay hotel order")
     @ResponseBody
-    @PutMapping("/hotel/confirm")
+    @PostMapping("/hotel/confirm")
     public Result confirmHotelOrder(int orderId) throws Exception{
         return hotelOrderService.confirmHotelOrder(orderId);
+    }
+
+    @Operation(summary = "get orders by userId")
+    @ResponseBody
+    @GetMapping("/hotel/personal")
+    public Result getOrderListByUser(int userId) throws Exception{
+        return hotelOrderService.getOrderListByUser(userId);
     }
 
 
